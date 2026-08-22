@@ -1,12 +1,14 @@
 # gitops-config
 
-Repo de configuracion de ArgoCD, separado del codigo de cada
-microservicio. Aqui vive el registro de que se despliega y desde donde;
-cada microservicio (por ejemplo
+Repo unico de configuracion de despliegue: manifiestos Kubernetes y
+`Application` de ArgoCD, separados del codigo de cada microservicio. Los
+repos de codigo (por ejemplo
 [hello-world-argocd](https://github.com/juanfranciscofernandezherreros/hello-world-argocd))
-solo aporta su codigo y sus manifiestos `k8s/`, sin saber nada de Argo.
+solo tienen la aplicacion, sin nada de Kubernetes ni de Argo.
 
 - `applications/` — un `Application` de ArgoCD por microservicio.
+- `manifests/<servicio>/` — Namespace, Deployment, Service de ese
+  microservicio.
 
 ## Instalar ArgoCD en el cluster
 
@@ -38,13 +40,17 @@ argocd login localhost:8081 --username admin --insecure
 kubectl apply -f applications/hello-world.yaml
 ```
 
-Con `syncPolicy.automated`, cualquier cambio en el repo del microservicio
-(carpeta `k8s/`) se aplica solo, sin `argocd app sync` manual.
+Con `syncPolicy.automated`, cualquier cambio en `manifests/hello-world/`
+se aplica solo, sin `argocd app sync` manual.
 
 ## Anadir un microservicio nuevo
 
-Copia `applications/hello-world.yaml`, cambia `metadata.name`,
-`spec.source.repoURL` y `spec.destination.namespace`, y aplica el fichero.
+1. Crea `manifests/<servicio>/` con sus manifiestos.
+2. Copia `applications/hello-world.yaml`, cambia `metadata.name`, `path` y
+   `destination.namespace`.
+3. `kubectl apply -f applications/<servicio>.yaml`.
+
 Cuando haya varios servicios con el mismo patron, vale la pena sustituir
-esta carpeta por un unico `ApplicationSet` (ver
+`applications/` por un unico `ApplicationSet` que genere las Applications
+a partir de `manifests/*` (ver
 `crud-automation/argocd/applicationset.yaml` como referencia).
