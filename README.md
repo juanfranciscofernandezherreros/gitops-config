@@ -13,13 +13,17 @@ solo tienen la aplicacion, sin nada de Kubernetes ni de Argo.
 ## Instalar ArgoCD en el cluster
 
 ```powershell
-kind create cluster --name argocd-demo
-kubectl config use-context kind-argocd-demo
+kind create cluster --name hello-world
+kubectl config use-context kind-hello-world
 
 kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl apply -n argocd --server-side --force-conflicts -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 kubectl -n argocd rollout status deploy/argocd-server
 ```
+
+`--server-side` es necesario: con `apply` normal, el CRD de `ApplicationSet`
+supera el limite de 262144 bytes en la anotacion `last-applied-configuration`
+y falla.
 
 Acceso a la UI/CLI:
 
