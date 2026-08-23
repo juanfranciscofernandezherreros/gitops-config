@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: godbyemicroservices
+  namespace: godbyemicroservices
+  labels:
+    app: godbyemicroservices
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: godbyemicroservices
+  template:
+    metadata:
+      labels:
+        app: godbyemicroservices
+    spec:
+      containers:
+        - name: godbyemicroservices
+          image: godbyemicroservices:local
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
