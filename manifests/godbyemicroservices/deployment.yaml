@@ -19,6 +19,9 @@ spec:
         - name: godbyemicroservices
           image: godbyemicroservices:local
           imagePullPolicy: Never
+          env:
+            - name: OOM_ON_STARTUP
+              value: "true"
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -36,7 +39,7 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 256Mi
+              memory: 64Mi
             limits:
               cpu: 500m
-              memory: 512Mi
+              memory: 100Mi

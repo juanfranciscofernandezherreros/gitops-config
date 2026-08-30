@@ -58,3 +58,11 @@ Cuando haya varios servicios con el mismo patron, vale la pena sustituir
 `applications/` por un unico `ApplicationSet` que genere las Applications
 a partir de `manifests/*` (ver
 `crud-automation/argocd/applicationset.yaml` como referencia).
+
+## Prueba OOM de GodbyeMicroservices
+
+El Deployment de `godbyemicroservices` limita el contenedor a `100Mi` y activa
+la carga de memoria durante el arranque. La JVM de la imagen limita su heap a
+64 MiB para lanzar `java.lang.OutOfMemoryError: Java heap space` antes de que el
+kernel termine el contenedor como `OOMKilled`, ya que el proceso tambien usa
+memoria nativa y metaspace fuera del heap.
