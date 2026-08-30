@@ -7,7 +7,6 @@ metadata:
     app: godbyemicroservices
 spec:
   replicas: 1
-  progressDeadlineSeconds: 30
   selector:
     matchLabels:
       app: godbyemicroservices
@@ -20,9 +19,6 @@ spec:
         - name: godbyemicroservices
           image: godbyemicroservices:local
           imagePullPolicy: Never
-          env:
-            - name: OOM_ON_STARTUP
-              value: "true"
           ports:
             - containerPort: 8080
           readinessProbe:

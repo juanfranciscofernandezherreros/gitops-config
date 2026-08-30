@@ -58,13 +58,3 @@ Cuando haya varios servicios con el mismo patron, vale la pena sustituir
 `applications/` por un unico `ApplicationSet` que genere las Applications
 a partir de `manifests/*` (ver
 `crud-automation/argocd/applicationset.yaml` como referencia).
-
-## Prueba OOM de GodbyeMicroservices
-
-El Deployment de `godbyemicroservices` limita el contenedor a `100Mi` y activa
-la carga de memoria durante el arranque. Ademas usa
-`progressDeadlineSeconds: 30`: si el pod no llega a Ready por la OOM,
-Kubernetes informa `ProgressDeadlineExceeded` y Argo CD marca la operacion como
-degradada. El hook `PreSync` ejecuta la misma imagen con esos limites; cuando
-termina por OOM, el Job falla y Argo CD marca tambien la operacion de
-sincronizacion como `Failed`.
