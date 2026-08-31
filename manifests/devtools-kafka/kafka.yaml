@@ -24,6 +24,8 @@ metadata:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   replicas: 1
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app.kubernetes.io/name: kafka
@@ -75,11 +77,8 @@ spec:
             - name: KAFKA_HEAP_OPTS
               value: -Xms256m -Xmx512m
           readinessProbe:
-            exec:
-              command:
-                - /bin/bash
-                - -ec
-                - kafka-broker-api-versions --bootstrap-server localhost:9092 >/dev/null
+            tcpSocket:
+              port: host
             initialDelaySeconds: 20
             periodSeconds: 10
             timeoutSeconds: 5
