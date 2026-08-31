@@ -1,38 +1,45 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: godbyemicroservices-h2-oom
-  namespace: godbyemicroservices-h2-oom
+  name: godbyemicroservices-postgres-oom
+  namespace: godbyemicroservices-postgres-oom
   labels:
-    app: godbyemicroservices-h2-oom
+    app: godbyemicroservices-postgres-oom
   annotations:
-    app.kubernetes.io/source-revision: "24eee8a"
+    app.kubernetes.io/source-revision: "3119538"
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: godbyemicroservices-h2-oom
+      app: godbyemicroservices-postgres-oom
   template:
     metadata:
       labels:
-        app: godbyemicroservices-h2-oom
+        app: godbyemicroservices-postgres-oom
     spec:
       containers:
-        - name: godbyemicroservices-h2-oom
-          image: godbyemicroservices-h2-oom:24eee8a
+        - name: godbyemicroservices-postgres-oom
+          image: godbyemicroservices-postgres-oom:3119538
           imagePullPolicy: Never
           command:
             - java
           args:
-            - -Xmx18m
-            - -XX:MaxMetaspaceSize=40m
+            - -Xmx24m
+            - -XX:MaxMetaspaceSize=44m
             - -XX:ReservedCodeCacheSize=6m
-            - -XX:MaxDirectMemorySize=1m
+            - -XX:MaxDirectMemorySize=2m
             - -Xss256k
             - -XX:+UseSerialGC
             - -XX:TieredStopAtLevel=1
             - -jar
             - app.jar
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgresql:5432/goodbye
+            - name: SPRING_DATASOURCE_USERNAME
+              value: goodbye
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: goodbye
           ports:
             - containerPort: 8080
           startupProbe:

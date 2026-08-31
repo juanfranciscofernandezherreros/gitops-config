@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: godbyemicroservices-h2-oom
+  name: godbyemicroservices-postgres-oom
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/juanfranciscofernandezherreros/gitops-config.git
     targetRevision: HEAD
-    path: manifests/godbyemicroservices-h2-oom
+    path: manifests/godbyemicroservices-postgres-oom
   destination:
     server: https://kubernetes.default.svc
-    namespace: godbyemicroservices-h2-oom
+    namespace: godbyemicroservices-postgres-oom
   syncPolicy:
     automated:
       prune: true
