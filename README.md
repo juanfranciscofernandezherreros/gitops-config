@@ -10,11 +10,11 @@ solo tienen la aplicacion, sin nada de Kubernetes ni de Argo.
 - `manifests/<servicio>/` — Namespace, Deployment, Service de ese
   microservicio.
 
-Las plataformas compartidas pueden mantener sus manifiestos en su propio
-repositorio. `applications/devtools-kafka.yaml` apunta directamente a
-`devtools-kafka/k8s` y despliega en `kafka-shared` el stack completo: ZooKeeper,
-Kafka, Apicurio Registry, REST Proxy, Kafka Connect, Kafka UI, Redpanda Console
-y el registro automatico de contratos Avro.
+`applications/devtools-kafka.yaml` despliega en el namespace `devtools-kafka`
+la traduccion Kubernetes del stack `rft-devtools-kafka-cucumber-main/local-dev`:
+ZooKeeper, Kafka, Confluent Schema Registry y Kafka REST Proxy 7.4.4. Un hook
+PostSync registra automaticamente los contratos `test-topic-key` y
+`test-topic-value` que utilizan la aplicacion demo y sus samples.
 
 ## Instalar ArgoCD en el cluster
 
@@ -58,13 +58,13 @@ se aplica solo, sin `argocd app sync` manual.
 ```powershell
 kubectl apply -f applications/devtools-kafka.yaml
 kubectl get application devtools-kafka -n argocd
-kubectl get pods,pvc -n kafka-shared
+kubectl get pods,svc -n devtools-kafka
 ```
 
-Los microservicios del cluster se conectan al broker mediante
-`kafka.kafka-shared.svc.cluster.local:9092`. Los manifiestos de la plataforma se
-versionan en `devtools-kafka`; este repositorio solo conserva la Application que
-la incorpora al arbol GitOps.
+Los microservicios del cluster se conectan al broker interno mediante
+`kafka.devtools-kafka.svc.cluster.local:29092`. Schema Registry queda en
+`http://schema-registry.devtools-kafka.svc.cluster.local:8081` y REST Proxy en
+`http://rest-proxy.devtools-kafka.svc.cluster.local:8082`.
 
 ## Anadir un microservicio nuevo
 

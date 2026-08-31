@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: register-demo-schemas
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/sync-wave: "4"
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 6
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: register-demo-schemas
+    spec:
+      restartPolicy: OnFailure
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 100
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: registrar
+          image: curlimages/curl:8.10.1
+          command: ["/bin/sh", "-ec"]
+          args:
+            - |
+              registry="http://schema-registry:8081"
+              until curl --fail --silent --show-error "${registry}/subjects" >/dev/null; do
+                sleep 5
+              done
+
+              curl --fail --silent --show-error \
+                --request POST \
+                --header "Content-Type: application/vnd.schemaregistry.v1+json" \
+                --data '{"schema":"{\"type\":\"string\"}"}' \
+                "${registry}/subjects/test-topic-key/versions"
+
+              curl --fail --silent --show-error \
+                --request POST \
+                --header "Content-Type: application/vnd.schemaregistry.v1+json" \
+                --data '{"schema":"{\"type\":\"record\",\"name\":\"DemoValue\",\"namespace\":\"com.devkafka.demo\",\"fields\":[{\"name\":\"id\",\"type\":\"int\"},{\"name\":\"message\",\"type\":\"string\"}]}"}' \
+                "${registry}/subjects/test-topic-value/versions"
+
+              printf '\nRegistered test-topic-key and test-topic-value\n'
+          resources:
+            requests:
+              cpu: 10m
+              memory: 16Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]

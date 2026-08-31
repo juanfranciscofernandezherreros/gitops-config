@@ -8,12 +8,12 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/juanfranciscofernandezherreros/devtools-kafka.git
-    targetRevision: main
-    path: k8s
+    repoURL: https://github.com/juanfranciscofernandezherreros/gitops-config.git
+    targetRevision: HEAD
+    path: manifests/devtools-kafka
   destination:
     server: https://kubernetes.default.svc
-    namespace: kafka-shared
+    namespace: devtools-kafka
   syncPolicy:
     automated:
       prune: true
