@@ -10,6 +10,12 @@ solo tienen la aplicacion, sin nada de Kubernetes ni de Argo.
 - `manifests/<servicio>/` — Namespace, Deployment, Service de ese
   microservicio.
 
+Las plataformas compartidas pueden mantener sus manifiestos en su propio
+repositorio. `applications/devtools-kafka.yaml` apunta directamente a
+`devtools-kafka/k8s` y despliega en `kafka-shared` el stack completo: ZooKeeper,
+Kafka, Apicurio Registry, REST Proxy, Kafka Connect, Kafka UI, Redpanda Console
+y el registro automatico de contratos Avro.
+
 ## Instalar ArgoCD en el cluster
 
 ```powershell
@@ -46,6 +52,19 @@ kubectl apply -f applications/hello-world.yaml
 
 Con `syncPolicy.automated`, cualquier cambio en `manifests/hello-world/`
 se aplica solo, sin `argocd app sync` manual.
+
+## Registrar la plataforma Kafka compartida
+
+```powershell
+kubectl apply -f applications/devtools-kafka.yaml
+kubectl get application devtools-kafka -n argocd
+kubectl get pods,pvc -n kafka-shared
+```
+
+Los microservicios del cluster se conectan al broker mediante
+`kafka.kafka-shared.svc.cluster.local:9092`. Los manifiestos de la plataforma se
+versionan en `devtools-kafka`; este repositorio solo conserva la Application que
+la incorpora al arbol GitOps.
 
 ## Anadir un microservicio nuevo
 
