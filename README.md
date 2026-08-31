@@ -66,6 +66,18 @@ Los microservicios del cluster se conectan al broker interno mediante
 `http://schema-registry.devtools-kafka.svc.cluster.local:8081` y REST Proxy en
 `http://rest-proxy.devtools-kafka.svc.cluster.local:8082`.
 
+Acceso temporal desde el equipo local (un comando por terminal):
+
+```powershell
+kubectl port-forward -n devtools-kafka svc/kafka 9092:9092
+kubectl port-forward -n devtools-kafka svc/schema-registry 18081:8081
+kubectl port-forward -n devtools-kafka svc/rest-proxy 18082:8082
+```
+
+Con esos tuneles, Schema Registry responde en `http://localhost:18081` y
+REST Proxy en `http://localhost:18082`. El listener externo de Kafka se anuncia
+como `localhost:9092`, igual que en el Compose original.
+
 ## Anadir un microservicio nuevo
 
 1. Crea `manifests/<servicio>/` con sus manifiestos.
