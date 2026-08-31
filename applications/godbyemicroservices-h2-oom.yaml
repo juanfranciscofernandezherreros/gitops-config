@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: godbyemicroservices-h2-oom
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/juanfranciscofernandezherreros/gitops-config.git
+    targetRevision: HEAD
+    path: manifests/godbyemicroservices-h2-oom
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: godbyemicroservices-h2-oom
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

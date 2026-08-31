@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: godbyemicroservices-h2-oom
+  namespace: godbyemicroservices-h2-oom
+  labels:
+    app: godbyemicroservices-h2-oom
+  annotations:
+    app.kubernetes.io/source-revision: "24eee8a"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: godbyemicroservices-h2-oom
+  template:
+    metadata:
+      labels:
+        app: godbyemicroservices-h2-oom
+    spec:
+      containers:
+        - name: godbyemicroservices-h2-oom
+          image: godbyemicroservices-h2-oom:24eee8a
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          startupProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            periodSeconds: 5
+            failureThreshold: 24
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 100Mi
