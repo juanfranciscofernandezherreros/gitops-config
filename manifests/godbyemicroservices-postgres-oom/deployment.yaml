@@ -25,6 +25,7 @@ spec:
             - java
           args:
             - -Xmx18m
+            - -XX:+ExitOnOutOfMemoryError
             - -XX:MaxMetaspaceSize=40m
             - -XX:ReservedCodeCacheSize=6m
             - -XX:MaxDirectMemorySize=1m
