@@ -12,7 +12,9 @@ solo tienen la aplicacion, sin nada de Kubernetes ni de Argo.
 
 `applications/devtools-kafka.yaml` despliega en el namespace `devtools-kafka`
 la traduccion Kubernetes del stack `rft-devtools-kafka-cucumber-main/local-dev`:
-ZooKeeper, Kafka, Confluent Schema Registry y Kafka REST Proxy 7.4.4. Un hook
+ZooKeeper, Kafka, Confluent Schema Registry, Kafka REST Proxy 7.4.4, Kafka UI
+y Redpanda Console. Las dos interfaces visuales usan el mismo broker y Schema
+Registry; Kafka UI tambien muestra la conexion con ZooKeeper. Un hook
 PostSync registra automaticamente los contratos `test-topic-key` y
 `test-topic-value` que utilizan la aplicacion demo y sus samples.
 
@@ -72,11 +74,15 @@ Acceso temporal desde el equipo local (un comando por terminal):
 kubectl port-forward -n devtools-kafka svc/kafka 9092:9092
 kubectl port-forward -n devtools-kafka svc/schema-registry 18081:8081
 kubectl port-forward -n devtools-kafka svc/rest-proxy 18082:8082
+kubectl port-forward -n devtools-kafka svc/kafka-ui 18080:8080
+kubectl port-forward -n devtools-kafka svc/redpanda-console 18083:8080
 ```
 
 Con esos tuneles, Schema Registry responde en `http://localhost:18081` y
-REST Proxy en `http://localhost:18082`. El listener externo de Kafka se anuncia
-como `localhost:9092`, igual que en el Compose original.
+REST Proxy en `http://localhost:18082`. Kafka UI queda en
+`http://localhost:18080` y Redpanda Console en `http://localhost:18083`. El
+listener externo de Kafka se anuncia como `localhost:9092`, igual que en el
+Compose original.
 
 ## Anadir un microservicio nuevo
 

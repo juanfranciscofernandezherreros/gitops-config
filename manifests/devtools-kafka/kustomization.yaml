@@ -9,6 +9,8 @@ resources:
   - kafka.yaml
   - schema-registry.yaml
   - rest-proxy.yaml
+  - kafka-ui.yaml
+  - redpanda-console.yaml
   - schema-registrar.yaml
 
 labels:
