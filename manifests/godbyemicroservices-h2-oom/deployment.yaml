@@ -24,10 +24,10 @@ spec:
           command:
             - java
           args:
-            - -Xmx24m
-            - -XX:MaxMetaspaceSize=44m
-            - -XX:ReservedCodeCacheSize=6m
-            - -XX:MaxDirectMemorySize=2m
+            - -Xmx18m
+            - -XX:MaxMetaspaceSize=40m
+            - -XX:ReservedCodeCacheSize=4m
+            - -XX:MaxDirectMemorySize=1m
             - -Xss256k
             - -XX:+UseSerialGC
             - -XX:TieredStopAtLevel=1
