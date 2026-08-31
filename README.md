@@ -18,6 +18,10 @@ Registry; Kafka UI tambien muestra la conexion con ZooKeeper. Un hook
 PostSync registra automaticamente los contratos `test-topic-key` y
 `test-topic-value` que utilizan la aplicacion demo y sus samples.
 
+La arquitectura, las conexiones, el funcionamiento de cada componente y las
+tareas de operacion se explican en
+[Plataforma Kafka local administrada con Argo CD](docs/plataforma-kafka-con-argocd.md).
+
 ## Instalar ArgoCD en el cluster
 
 ```powershell
