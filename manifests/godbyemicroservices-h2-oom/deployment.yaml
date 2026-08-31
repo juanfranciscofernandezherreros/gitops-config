@@ -21,6 +21,18 @@ spec:
         - name: godbyemicroservices-h2-oom
           image: godbyemicroservices-h2-oom:24eee8a
           imagePullPolicy: Never
+          command:
+            - java
+          args:
+            - -Xmx24m
+            - -XX:MaxMetaspaceSize=44m
+            - -XX:ReservedCodeCacheSize=6m
+            - -XX:MaxDirectMemorySize=2m
+            - -Xss256k
+            - -XX:+UseSerialGC
+            - -XX:TieredStopAtLevel=1
+            - -jar
+            - app.jar
           ports:
             - containerPort: 8080
           startupProbe:
