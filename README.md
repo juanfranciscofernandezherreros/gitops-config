@@ -21,6 +21,9 @@ PostSync registra automaticamente los contratos `test-topic-key` y
 La arquitectura, las conexiones, el funcionamiento de cada componente y las
 tareas de operacion se explican en
 [Plataforma Kafka local administrada con Argo CD](docs/plataforma-kafka-con-argocd.md).
+El articulo tambien esta publicado como HTML en
+[espanol](docs/plataforma-kafka-con-argocd.es.html) y
+[ingles](docs/plataforma-kafka-con-argocd.en.html).
 
 ## Instalar ArgoCD en el cluster
 
