@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rft-observability-item35-creator
+  namespace: rft-observability-item35
+spec:
+  selector:
+    app.kubernetes.io/name: rft-observability-item35-creator
+  ports:
+    - name: http
+      port: 8042
+      targetPort: http
+    - name: management
+      port: 9040
+      targetPort: management
+  type: ClusterIP
