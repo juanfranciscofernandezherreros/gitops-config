@@ -49,4 +49,5 @@ spec:
               mountPath: /data/reports
       volumes:
         - name: reports
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: rft-observability-item35-reports

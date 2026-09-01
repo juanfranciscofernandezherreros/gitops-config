@@ -5,6 +5,7 @@ namespace: rft-observability-item35
 
 resources:
   - namespace.yaml
+  - reports-pvc.yaml
   - kafka-alias-service.yaml
   - deployment.yaml
   - service.yaml
